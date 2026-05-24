@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Test Tema 3 — Gobierno, Administración y Relaciones con las Cortes | Opositar en Valencia</title>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700;1,400&family=Source+Sans+3:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --naranja:#d97706;--naranja-claro:#fef3c7;--naranja-borde:#f59e0b;
+    --azul-oscuro:#1e293b;--texto:#374151;--texto-suave:#6b7280;
+    --borde:#e5e7eb;--fondo:#fafaf9;--blanco:#ffffff;
+    --verde:#166534;--verde-bg:#f0fdf4;--verde-borde:#86efac;
+    --rojo:#991b1b;--rojo-bg:#fef2f2;--rojo-borde:#fca5a5;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Source Sans 3',sans-serif;background:var(--fondo);color:var(--texto);min-height:100vh;font-size:16px;line-height:1.6;}
+  header{background:var(--blanco);border-bottom:1px solid var(--borde);}
+  .header-top{max-width:860px;margin:0 auto;padding:1.4rem 1.5rem 1rem;display:flex;align-items:flex-start;gap:1.2rem;}
+  .header-logo{width:48px;height:48px;border-radius:8px;object-fit:contain;flex-shrink:0;}
+  .header-textos{flex:1;}
+  .header-site{font-size:11px;text-transform:uppercase;letter-spacing:1.5px;color:var(--naranja);font-weight:600;margin-bottom:3px;}
+  .header-titulo{font-family:'Lora',serif;font-size:clamp(1.2rem,3.5vw,1.7rem);font-weight:700;color:var(--azul-oscuro);line-height:1.2;}
+  .header-sub{font-size:0.88rem;color:var(--texto-suave);margin-top:4px;}
+  .header-meta{background:var(--naranja-claro);border-top:1px solid #fde68a;padding:0.55rem 1.5rem;}
+  .header-meta-inner{max-width:860px;margin:0 auto;display:flex;align-items:center;gap:1.5rem;flex-wrap:wrap;font-size:0.83rem;color:#92400e;font-weight:500;}
+  .barra-wrap{position:sticky;top:0;z-index:100;background:var(--blanco);border-bottom:1px solid var(--borde);padding:0.6rem 1.5rem;box-shadow:0 1px 6px rgba(0,0,0,0.05);}
+  .barra-inner{max-width:860px;margin:0 auto;display:flex;align-items:center;gap:1rem;}
+  .barra-track{flex:1;height:6px;background:#f3f4f6;border-radius:99px;overflow:hidden;}
+  .barra-fill{height:100%;background:var(--naranja);border-radius:99px;transition:width 0.35s ease;width:0%;}
+  .barra-num{font-size:13px;font-weight:600;color:var(--azul-oscuro);white-space:nowrap;min-width:52px;}
+  .barra-score{font-size:13px;color:var(--texto-suave);white-space:nowrap;}
+  .barra-score .ok{color:var(--verde);font-weight:600;}
+  .barra-score .ko{color:var(--rojo);font-weight:600;}
+  main{max-width:860px;margin:0 auto;padding:2rem 1.5rem 5rem;}
+  .card{background:var(--blanco);border:1px solid var(--borde);border-radius:10px;padding:1.5rem 1.6rem;margin-bottom:1.4rem;transition:box-shadow 0.2s;}
+  .card:hover{box-shadow:0 3px 14px rgba(0,0,0,0.06);}
+  .card-num{font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--naranja);margin-bottom:0.5rem;}
+  .card-pregunta{font-family:'Lora',serif;font-size:1rem;font-weight:600;line-height:1.55;color:var(--azul-oscuro);margin-bottom:1.1rem;}
+  .opciones{display:flex;flex-direction:column;gap:0.45rem;}
+  .opcion{display:flex;align-items:flex-start;gap:0.7rem;padding:0.7rem 1rem;border:1.5px solid var(--borde);border-radius:7px;cursor:pointer;background:var(--blanco);text-align:left;font-family:'Source Sans 3',sans-serif;font-size:0.93rem;color:var(--texto);line-height:1.5;transition:border-color 0.15s,background 0.15s;width:100%;}
+  .opcion:hover:not(:disabled){border-color:var(--naranja-borde);background:var(--naranja-claro);}
+  .opcion .letra{font-weight:700;color:var(--naranja);min-width:18px;font-size:0.85rem;margin-top:2px;flex-shrink:0;}
+  .opcion.correcta{border-color:var(--verde-borde);background:var(--verde-bg);color:var(--verde);}
+  .opcion.correcta .letra{color:#15803d;}
+  .opcion.incorrecta{border-color:var(--rojo-borde);background:var(--rojo-bg);color:var(--rojo);}
+  .opcion.incorrecta .letra{color:var(--rojo);}
+  .opcion:disabled{cursor:default;}
+  .explicacion{display:none;margin-top:1rem;padding:0.9rem 1rem 0.9rem 1.1rem;background:#fffbeb;border-left:3px solid var(--naranja);border-radius:0 6px 6px 0;font-size:0.875rem;line-height:1.65;color:var(--texto);}
+  .explicacion.visible{display:block;animation:fadeIn 0.22s ease;}
+  .explicacion strong{color:var(--azul-oscuro);}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(-5px);}to{opacity:1;transform:translateY(0);}}
+  .resultado{display:none;background:var(--blanco);border:1px solid var(--borde);border-radius:12px;padding:2.5rem 2rem 2rem;margin:1.5rem 0 2rem;text-align:center;}
+  .resultado.visible{display:block;animation:fadeIn 0.3s ease;}
+  .resultado-eyebrow{font-size:11px;text-transform:uppercase;letter-spacing:2px;color:var(--naranja);font-weight:600;margin-bottom:0.5rem;}
+  .resultado h2{font-family:'Lora',serif;font-size:1.75rem;font-weight:700;color:var(--azul-oscuro);margin-bottom:0.3rem;}
+  .resultado-nota{font-size:3.2rem;font-weight:700;color:var(--azul-oscuro);line-height:1;margin:1rem 0 0.3rem;font-family:'Lora',serif;}
+  .resultado-nota span{color:var(--naranja);}
+  .calif-badge{display:inline-block;padding:5px 16px;border-radius:99px;font-size:0.9rem;font-weight:600;margin:0.6rem 0 1.5rem;}
+  .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin:0 0 1.5rem;}
+  .stat{background:var(--fondo);border:1px solid var(--borde);border-radius:8px;padding:0.9rem 0.5rem;}
+  .stat-num{font-size:1.9rem;font-weight:700;font-family:'Lora',serif;}
+  .stat-lab{font-size:0.78rem;color:var(--texto-suave);margin-top:2px;}
+  .resultado-hint{font-size:0.85rem;color:var(--texto-suave);margin-bottom:1.2rem;}
+  .btn{display:inline-flex;align-items:center;gap:6px;padding:0.7rem 1.6rem;border-radius:7px;font-family:'Source Sans 3',sans-serif;font-size:0.95rem;font-weight:600;cursor:pointer;border:none;transition:all 0.18s;}
+  .btn-naranja{background:var(--naranja);color:white;}
+  .btn-naranja:hover{background:#b45309;transform:translateY(-1px);}
+  .divider{text-align:center;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--texto-suave);margin:2rem 0 1.5rem;display:flex;align-items:center;gap:1rem;}
+  .divider::before,.divider::after{content:'';flex:1;height:1px;background:var(--borde);}
+  @media(max-width:580px){main{padding:1.2rem 1rem 4rem;}.card{padding:1.1rem;}.stats{grid-template-columns:1fr 1fr;}.header-top{padding:1rem;gap:0.8rem;}.header-meta{padding:0.5rem 1rem;}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-top">
+    <img class="header-logo"
+      src="https://opositorgva.wordpress.com/wp-content/uploads/2024/04/cropped-opositar-en-valencia-logo-sin-fondo.png"
+      alt="Opositar en Valencia" onerror="this.style.display='none'">
+    <div class="header-textos">
+      <div class="header-site">Opositar en Valencia · GVA</div>
+      <div class="header-titulo">Tema 3 — El Gobierno, la Administración y sus relaciones con las Cortes</div>
+      <div class="header-sub">Título IV: Gobierno y Administración · Título V: Relaciones Gobierno-Cortes Generales</div>
+    </div>
+  </div>
+  <div class="header-meta">
+    <div class="header-meta-inner">
+      <span>📋 50 preguntas</span>
+      <span>🎯 Nivel medio-alto</span>
+      <span>🔀 Orden aleatorio en cada intento</span>
+      <span>✅ Explicación en cada respuesta</span>
+    </div>
+  </div>
+</header>
+
+<div class="barra-wrap">
+  <div class="barra-inner">
+    <div class="barra-track"><div class="barra-fill" id="barraFill"></div></div>
+    <span class="barra-num" id="barraNum">0 / 50</span>
+    <span class="barra-score"><span class="ok" id="scoreOk">✓ 0</span> &nbsp;<span class="ko" id="scoreKo">✗ 0</span></span>
+  </div>
+</div>
+
+<main id="mainContent"></main>
+
+<script>
+const BANCO = [
+  // ── TÍTULO IV: GOBIERNO Y ADMINISTRACIÓN ──
+  {
+    p: "El artículo 97 CE atribuye al Gobierno la dirección de la política interior y exterior. ¿Qué otras funciones le confiere expresamente este precepto?",
+    ops: ["Dirigir la Administración civil y militar, la defensa del Estado, ejercer la función ejecutiva y la potestad reglamentaria de acuerdo con la Constitución y las leyes", "Dirigir la política económica, nombrar a los altos cargos del Estado y ejercer la iniciativa legislativa", "Ejercer la potestad legislativa delegada, presidir el Consejo de Estado y dirigir la política exterior", "Dirigir la política de defensa, ejercer el control parlamentario y coordinar las Comunidades Autónomas"],
+    c: 0,
+    exp: "<strong>Respuesta correcta: A.</strong> El art. 97 CE atribuye al Gobierno: dirección de la política interior y exterior, de la Administración civil y militar y de la defensa del Estado; y el ejercicio de la función ejecutiva y la potestad reglamentaria de acuerdo con la Constitución y las leyes. Son las cuatro grandes funciones del ejecutivo."
+  },
+  {
+    p: "Según el artículo 98.1 CE, ¿cuál es la composición del Gobierno?",
+    ops: ["El Presidente, los Ministros y el Secretario General de la Presidencia", "El Presidente, los Vicepresidentes en su caso, los Ministros y los demás miembros que establezca la ley", "El Presidente, el Vicepresidente primero, los Ministros y los Secretarios de Estado", "El Presidente, los Ministros y los Delegados del Gobierno en las Comunidades Autónomas"],
+    c: 1,
+    exp: "<strong>Respuesta correcta: B.</strong> El art. 98.1 CE establece que «el Gobierno se compone del Presidente, de los Vicepresidentes, en su caso, de los Ministros y de los demás miembros que establezca la ley». Los Vicepresidentes son opcionales («en su caso») y la ley puede ampliar la composición."
+  },
+  {
+    p: "El artículo 98.2 CE describe la posición del Presidente dentro del Gobierno. ¿Cuál es su función?",
+    ops: ["Preside el Gobierno y decide en última instancia sobre cualquier asunto de gestión ministerial", "Dirige la acción del Gobierno y coordina las funciones de los demás miembros, sin perjuicio de la competencia y responsabilidad directa de éstos en su gestión", "Representa al Estado en las relaciones internacionales y coordina la política exterior", "Ejerce la potestad reglamentaria y dirige la Administración civil del Estado"],
+    c: 1,
+    exp: "<strong>Respuesta correcta: B.</strong> El art. 98.2 CE establece que «el Presidente dirige la acción del Gobierno y coordina las funciones de los demás miembros del mismo, sin perjuicio de la competencia y responsabilidad directa de éstos en su gestión». El Presidente tiene primacía pero los ministros conservan su propia responsabilidad."
+  },
+  {
+    p: "El artículo 98.3 CE establece las incompatibilidades de los miembros del Gobierno. ¿Qué actividades les están vedadas?",
+    ops: ["No pueden ejercer actividades privadas ni tener cargos en partidos políticos", "No pueden ejercer otras funciones representativas que las propias del mandato parlamentario, ni cualquier otra función pública que no derive de su cargo, ni actividad profesional o mercantil alguna", "No pueden ejercer cargos en organismos internacionales ni en empresas públicas", "Solo están impedidos de ejercer actividades mercantiles, pero sí pueden ejercer la abogacía"],
+    c: 1,
+    exp: "<strong>Respuesta correcta: B.</strong> El art. 98.3 CE prohíbe a los miembros del Gobierno: ejercer funciones representativas distintas del mandato parlamentario, cualquier otra función pública que no derive de su cargo, y toda actividad profesional o mercantil. Es un régimen de incompatibilidad plena para garantizar la dedicación exclusiva."
+  },
+  {
+    p: "El artículo 99.1 CE regula el procedimiento de investidura del Presidente del Gobierno. ¿A través de quién propone el Rey el candidato?",
+    ops: ["A través del Presidente del Senado", "A través del Presidente del Congreso de los Diputados", "A través del Presidente del Tribunal Constitucional", "Directamente ante el Pleno de las Cortes Generales"],
+    c: 1,
+    exp: "<strong>Respuesta correcta: B.</strong> El art. 99.1 CE establece que el Rey, previa consulta con los representantes de los grupos políticos con representación parlamentaria, propondrá un candidato «a través del Presidente del Congreso». El Presidente del Congreso actúa como canal formal de la propuesta regia."
+  },
+  {
+    p: "El artículo 99.3 CE regula las votaciones de investidura. ¿Qué mayoría se requiere en la primera votación y cuál en la segunda?",
+    ops: ["Primera: mayoría de dos tercios; segunda: mayoría absoluta", "Primera: mayoría absoluta; segunda, 48 horas después: mayoría simple", "Primera y segunda: mayoría absoluta en ambas votaciones", "Primera: mayoría simple; segunda: mayoría absoluta"],
+    c: 1,
+    exp: "<strong>Respuesta correcta: B.</strong> El art. 99.3 CE establece que en la primera votación se requiere mayoría absoluta. Si no se alcanza, «se someterá la misma propuesta a nueva votación cuarenta y ocho horas después de la anterior, y la confianza se entenderá otorgada si obtuviere la mayoría simple»."
+  },
+  {
+    p: "Si transcurrido el plazo de dos meses desde la primera votación de investidura ningún candidato obtiene la confianza del Congreso, ¿qué sucede según el artículo 99.5 CE?",
+    ops: ["El Gobierno en funciones convoca elecciones previo informe del Consejo de Estado", "El Rey disolverá ambas Cámaras y convocará nuevas elecciones con el refrendo del Presidente del Congreso", "El Presidente en funciones asume plenas competencias hasta nueva investidura", "Las Cortes Generales en sesión conjunta elegirán al Presidente por mayoría absoluta"],
+    c: 1,
+    exp: "<strong>Respuesta correcta: B.</strong> El art. 99.5 CE dispone que «si transcurrido el plazo de dos meses, a partir de la primera votación de investidura, ningún candidato hubiere obtenido la confianza del Congreso, el Rey disolverá ambas Cámaras y convocará nuevas elecciones con el refrendo del Presidente del Congreso»."
+  },
+  {
+    p: "El artículo 100 CE regula el nombramiento de los demás miembros del Gobierno (ministros). ¿Cómo se produce?",
+    ops: ["Son nombrados por el Rey a propuesta del Congreso de los Diputados", "Son nombrados y separados por el Rey, a propuesta de su Presidente", "Son nombrados por el Presidente del Gobierno con refrendo del Congreso", "Son designados por el Consejo de Ministros a propuesta del Presidente"],
+    c: 1,
+    exp: "<strong>Respuesta correcta: B.</strong> El art. 100 CE establece que «los demás miembros del Gobierno serán nombrados y separados por el Rey, a propuesta de su Presidente». El Presidente del Gobierno tiene plena libertad para proponer y para cesar a los ministros, siendo el Rey quien formaliza el acto."
+  },
+  {
+    p: "El artículo 101.1 CE enumera las causas de cese del Gobierno. ¿Cuáles son?",
+    ops: ["Elecciones generales, pérdida de la mayoría parlamentaria o dimisión del Presidente", "Tras la celebración de elecciones generales, pérdida de la confianza parlamentaria prevista en la CE o dimisión o fallecimiento de su Presidente", "Moción de censura aprobada, cuestión de confianza perdida o disolución de las Cortes", "Expiración del mandato, dimisión colectiva del Gobierno o resolución del Tribunal Constitucional"],
+    c: 1,
+    exp: "<strong>Respuesta correcta: B.</strong> El art. 101.1 CE establece que «el Gobierno cesa tras la celebración de elecciones generales, en los casos de pérdida de la confianza parlamentaria previstos en la Constitución, o por dimisión o fallecimiento de su Presidente». Son causas taxativas: no cabe el cese por otros motivos no previstos en la CE."
+  },
+  {
+    p: "¿Qué establece el artículo 101.2 CE sobre el Gobierno cesante?",
+    ops: ["Cesará de manera inmediata sin posibilidad de adoptar actos administrativos", "Continuará en funciones hasta la toma de posesión del nuevo Gobierno", "Será sustituido de inmediato por el Presidente en funciones designado por el Congreso", "El Gobierno cesante solo podrá adoptar actos de mero trámite"],
+    c: 1,
+    exp: "<strong>Respuesta correcta: B.</strong> El art. 101.2 CE establece que «el Gobierno cesante continuará en funciones hasta la toma de posesión del nuevo Gobierno». Este período de gobierno en funciones tiene limitaciones que desarrolla la legislación ordinaria, pero la CE solo establece la obligación de continuidad."
+  },
+  {
+    p: "El artículo 102.2 CE establece un requisito especial para acusar al Presidente o miembros del Gobierno por traición o delitos contra la seguridad del Estado. ¿Cuál es?",
+    ops: ["Solo puede plantearse por iniciativa del Fiscal General del Estado con informe del Consejo de Estado", "Solo puede ser planteada por iniciativa de la cuarta parte de los miembros del Congreso, y con la aprobación de la mayoría absoluta del mismo", "Requiere propuesta del Senado por mayoría de dos tercios y aprobación del Congreso por mayoría absoluta", "Debe ser acordada por las Cortes Generales en sesión conjunta por mayoría de tres quintos"],
+    c: 1,
+    exp: "<strong>Respuesta correcta: B.</strong> El art. 102.2 CE establece un doble requisito: la acusación «sólo podrá ser planteada por iniciativa de la cuarta parte de los miembros del Congreso, y con la aprobación de la mayoría absoluta del mismo». El umbral elevado protege al Gobierno frente a acusaciones políticas abusivas."
+  },
+  {
+    p: "El artículo 102.3 CE establece una prohibición expresa respecto al indulto de miembros del Gobierno. ¿Cuál es?",
+    ops: ["Los miembros del Gobierno no podrán ser indultados en ningún caso por delitos cometidos en el ejercicio de sus funciones", "La prerrogativa real de gracia no será aplicable a ninguno de los supuestos del artículo 102 CE", "Solo podrán ser indultados con autorización previa de las Cortes Generales", "El indulto requerirá la propuesta del Fiscal General del Estado y la aprobación del Consejo de Ministros"],
+    c: 1,
+    exp: "<strong>Respuesta correcta: B.</strong> El art. 102.3 CE establece que «la prerrogativa real de gracia no será aplicable a ninguno de los supuestos del presente artículo». Esta prohibición impide que el Rey conceda el indulto a miembros del Gobierno condenados por traición o delitos contra la seguridad del Estado."
+  },
+  {
+    p: "El artículo 103.1 CE establece los principios que rigen la actuación de la Administración Pública. ¿Cuáles son?",
+    ops: ["Legalidad, imparcialidad, eficiencia, transparencia y buena fe", "Eficacia, jerarquía, descentralización, desconcentración y coordinación, con sometimiento pleno a la ley y al Derecho", "Objetividad, neutralidad, mérito, capacidad y publicidad", "Eficiencia, responsabilidad, proporcionalidad, participación y control judicial"],
+    c: 1,
+    exp: "<strong>Respuesta correcta: B.</strong> El art. 103.1 CE establece que la Administración Pública «actúa de acuerdo con los principios de eficacia, jerarquía, descentralización, desconcentración y coordinación, con sometimiento pleno a la ley y al Derecho». Además, sirve «con objetividad los intereses generales»."
+  },
+  {
+    p: "El artículo 103.3 CE ordena al legislador regular determinadas materias de la función pública. ¿Cuáles menciona expresamente?",
+    ops: ["El régimen retributivo, la jornada laboral, los derechos sindicales y el régimen disciplinario", "El estatuto de los funcionarios, el acceso con principios de mérito y capacidad, las peculiaridades de sindicación, el sistema de incompatibilidades y las garantías de imparcialidad", "El régimen de contratación, la carrera profesional, la evaluación del desempeño y la movilidad interadministrativa", "Los cuerpos y escalas, las pruebas selectivas, la provisión de puestos y la excedencia voluntaria"],
+    c: 1,
+    exp: "<strong>Respuesta correcta: B.</strong> El art. 103.3 CE ordena que la ley regule: el estatuto de los funcionarios públicos, el acceso a la función pública de acuerdo con los principios de mérito y capacidad, las peculiaridades del ejercicio del derecho a sindicación, el sistema de incompatibilidades y las garantías para la imparcialidad en el ejercicio de sus funciones."
+  },
+  {
+    p: "Las Fuerzas y Cuerpos de Seguridad se regulan en el artículo 104 CE. ¿Cuál es su misión constitucional?",
+    ops: ["Garantizar el orden público y asistir a las Fuerzas Armadas en tiempo de guerra", "Proteger el libre ejercicio de los derechos y libertades y garantizar la seguridad ciudadana", "Defender la integridad territorial, perseguir el terrorismo y proteger las instituciones del Estado", "Vigilar las fronteras, controlar la inmigración y colaborar con Europol"],
+    c: 1,
+    exp: "<strong>Respuesta correcta: B.</strong> El art. 104.1 CE establece que las Fuerzas y Cuerpos de seguridad «tendrán como misión proteger el libre ejercicio de los derechos y libertades y garantizar la seguridad ciudadana». Actúan bajo la dependencia del Gobierno."
+  },
+  {
+    p: "El artículo 104.2 CE exige que las funciones, principios básicos de actuación y estatutos de las FCS se regulen mediante un tipo concreto de norma. ¿Cuál?",
+    ops: ["Decreto del Consejo de Ministros", "Ley ordinaria aprobada por el Congreso", "Ley orgánica", "Ley de bases con desarrollo reglamentario posterior"],
+    c: 2,
+    exp: "<strong>Respuesta correcta: C.</strong> El art. 104.2 CE establece que «una ley orgánica determinará las funciones, principios básicos de actuación y estatutos de las Fuerzas y Cuerpos de seguridad». Esta reserva de ley orgánica se materializó en la LO 2/1986, de Fuerzas y Cuerpos de Seguridad."
+  },
+  {
+    p: "El artículo 105.b) CE garantiza el acceso de los ciudadanos a los archivos y registros administrativos, pero admite excepciones. ¿Cuáles son?",
+    ops: ["Datos de carácter personal, secretos comerciales y documentos clasificados por el Gobierno", "Lo que afecte a la seguridad y defensa del Estado, la averiguación de los delitos y la intimidad de las personas", "Expedientes judiciales en tramitación, datos fiscales y secretos industriales", "Información clasificada, datos médicos y procedimientos sancionadores en curso"],
+    c: 1,
+    exp: "<strong>Respuesta correcta: B.</strong> El art. 105.b) CE establece que la ley regulará el acceso a los archivos y registros «salvo en lo que afecte a la seguridad y defensa del Estado, la averiguación de los delitos y la intimidad de las personas». Son las tres excepciones expresas al principio de transparencia."
+  },
+  {
+    p: "El artículo 106.1 CE establece el control jurisdiccional de la Administración. ¿Qué controlan los Tribunales?",
+    ops: ["Solo la legalidad de los actos administrativos expresos, no los silencios administrativos", "La potestad reglamentaria, la legalidad de la actuación administrativa y el sometimiento de ésta a los fines que la justifican", "Únicamente los actos administrativos que afecten a derechos fundamentales", "La actuación de la Administración del Estado, no de las Administraciones autonómicas ni locales"],
+    c: 1,
+    exp: "<strong>Respuesta correcta: B.</strong> El art. 106.1 CE establece que «los Tribunales controlan la potestad reglamentaria y la legalidad de la actuación administrativa, así como el sometimiento de ésta a los fines que la justifican». El control incluye tanto los reglamentos como los actos administrativos y la desviación de poder."
+  },
+  {
+    p: "El artículo 106.2 CE reconoce el derecho a la responsabilidad patrimonial de la Administración. ¿Cuál es la excepción que recoge expresamente la Constitución?",
+    ops: ["Los daños derivados de actuaciones de las Fuerzas Armadas en conflictos bélicos", "Los casos de fuerza mayor", "Los perjuicios causados por errores judiciales", "Los daños producidos por actos legislativos de aplicación general"],
+    c: 1,
+    exp: "<strong>Respuesta correcta: B.</strong> El art. 106.2 CE reconoce el derecho a ser indemnizado por lesiones derivadas del funcionamiento de los servicios públicos «salvo en los casos de fuerza mayor». La fuerza mayor es la única excepción constitucional expresa a la responsabilidad patrimonial de la Administración."
+  },
+  {
+    p: "El artículo 107 CE regula el Consejo de Estado. ¿Cómo lo define la Constitución?",
+    ops: ["Órgano de gobierno del poder judicial y máximo intérprete de la legalidad administrativa", "Supremo órgano consultivo del Gobierno, cuya composición y competencia regulará una ley orgánica", "Órgano asesor de las Cortes Generales en materia legislativa y presupuestaria", "Órgano de control externo de la Administración del Estado con funciones fiscalizadoras"],
+    c: 1,
+    exp: "<strong>Respuesta correcta: B.</strong> El art. 107 CE define al Consejo de Estado como «el supremo órgano consultivo del Gobierno» y añade que «una ley orgánica regulará su composición y competencia». Su carácter es estrictamente consultivo, no vinculante salvo en los supuestos en que la ley lo establezca."
+  },
+  // ── TÍTULO V: RELACIONES GOBIERNO-CORTES ──
+  {
+    p: "El artículo 108 CE establece la responsabilidad política del Gobierno. ¿Ante qué órgano y de qué forma responde?",
+    ops: ["Ante ambas Cámaras de forma individual por cada ministro", "Solidariamente en su gestión política ante el Congreso de los Diputados", "Ante el Senado por las políticas que afecten al Estado autonómico", "Individualmente cada ministro ante la Comisión parlamentaria correspondiente"],
+    c: 1,
+    exp: "<strong>Respuesta correcta: B.</strong> El art. 108 CE establece que «el Gobierno responde solidariamente en su gestión política ante el Congreso de los Diputados». La responsabilidad es solidaria (del Gobierno como colegio) y se ejerce ante el Congreso, no ante el Senado ni ante ambas Cámaras."
+  },
+  {
+    p: "El artículo 109 CE regula la facultad de información de las Cámaras. ¿A quién pueden dirigirse para recabar información?",
+    ops: ["Solo al Presidente del Gobierno y a los Ministros mediante comparecencia personal", "Al Gobierno y sus Departamentos y a cualesquiera autoridades del Estado y de las Comunidades Autónomas", "Únicamente a los organismos de la Administración del Estado, no de las CCAA", "A cualquier persona física o jurídica que opere en España mediante requerimiento judicial"],
+    c: 1,
+    exp: "<strong>Respuesta correcta: B.</strong> El art. 109 CE establece que las Cámaras y sus Comisiones podrán recabar información «del Gobierno y de sus Departamentos y de cualesquiera autoridades del Estado y de las Comunidades Autónomas». El alcance es amplio: incluye también las autoridades autonómicas."
+  },
+  {
+    p: "Según el artículo 110.2 CE, ¿qué derechos tienen los miembros del Gobierno respecto a las sesiones parlamentarias?",
+    ops: ["Pueden asistir a las sesiones pero solo con voz consultiva, sin voto", "Tienen acceso a las sesiones y a sus Comisiones, facultad de hacerse oír en ellas, y pueden solicitar que informen ante las mismas funcionarios de sus Departamentos", "Solo pueden asistir cuando sean convocados por la Mesa de la Cámara respectiva", "Tienen derecho a asistir a las sesiones plenarias pero no a las comisiones sin convocatoria previa"],
+    c: 1,
+    exp: "<strong>Respuesta correcta: B.</strong> El art. 110.2 CE reconoce a los miembros del Gobierno: acceso a las sesiones de las Cámaras y a sus Comisiones, la facultad de hacerse oír en ellas, y la posibilidad de solicitar que informen ante las mismas funcionarios de sus Departamentos."
+  },
+  {
+    p: "El artículo 111.2 CE establece que toda interpelación podrá dar lugar a una moción. ¿Qué efecto tiene dicha moción?",
+    ops: ["Obliga al Gobierno a presentar su dimisión si es aprobada por mayoría simple", "La Cámara manifiesta su posición mediante la moción", "Activa automáticamente una comisión de investigación sobre la materia interpelada", "Vincula al Gobierno a adoptar las medidas solicitadas en un plazo máximo de treinta días"],
+    c: 1,
+    exp: "<strong>Respuesta correcta: B.</strong> El art. 111.2 CE establece que «toda interpelación podrá dar lugar a una moción en la que la Cámara manifieste su posición». La moción es una declaración política de la Cámara, sin los efectos propios de la moción de censura del art. 113 CE."
+  },
+  {
+    p: "El artículo 112 CE regula la cuestión de confianza. ¿Quién puede plantearla y ante quién?",
+    ops: ["El Gobierno colegiadamente ante ambas Cámaras en sesión conjunta", "El Presidente del Gobierno, previa deliberación del Consejo de Ministros, ante el Congreso de los Diputados", "Cualquier miembro del Gobierno ante la Comisión competente del Congreso", "El Presidente del Gobierno, a propuesta del Congreso, ante el Tribunal Constitucional"],
+    c: 1,
+    exp: "<strong>Respuesta correcta: B.</strong> El art. 112 CE establece que «el Presidente del Gobierno, previa deliberación del Consejo de Ministros, puede plantear ante el Congreso de los Diputados la cuestión de confianza sobre su programa o sobre una declaración de política general»."
+  },
+  {
+    p: "¿Qué mayoría se requiere para que el Congreso otorgue la confianza al Gobierno en la cuestión de confianza del artículo 112 CE?",
+    ops: ["Mayoría absoluta de los Diputados", "Mayoría simple de los Diputados", "Mayoría de dos tercios de los Diputados presentes", "Mayoría de tres quintos del total de Diputados"],
+    c: 1,
+    exp: "<strong>Respuesta correcta: B.</strong> El art. 112 CE establece que «la confianza se entenderá otorgada cuando vote a favor de la misma la mayoría simple de los Diputados». Nótese la diferencia con la investidura (primera votación: mayoría absoluta) y con la moción de censura (mayoría absoluta)."
+  },
+  {
+    p: "El artículo 113.1 CE regula la moción de censura. ¿Qué mayoría se requiere para su aprobación?",
+    ops: ["Mayoría simple de los Diputados presentes", "Mayoría absoluta del Congreso de los Diputados", "Mayoría de dos tercios del total de Diputados", "Mayoría de tres quintos del Congreso"],
+    c: 1,
+    exp: "<strong>Respuesta correcta: B.</strong> El art. 113.1 CE establece que el Congreso puede exigir la responsabilidad política del Gobierno «mediante la adopción por mayoría absoluta de la moción de censura». La mayoría absoluta exigida hace que la moción de censura sea un instrumento de uso excepcional."
+  },
+  {
+    p: "La moción de censura española es «constructiva». ¿Qué exige el artículo 113.2 CE para presentarla?",
+    ops: ["Debe ser propuesta por la mitad de los Diputados e incluir un programa de gobierno alternativo", "Debe ser propuesta al menos por la décima parte de los Diputados e incluir un candidato a la Presidencia del Gobierno", "Requiere la firma de un tercio de los Diputados y la aceptación previa del candidato propuesto", "Ha de proponerla un grupo parlamentario completo con un programa de gobierno detallado"],
+    c: 1,
+    exp: "<strong>Respuesta correcta: B.</strong> El art. 113.2 CE establece que «la moción de censura deberá ser propuesta al menos por la décima parte de los Diputados, y habrá de incluir un candidato a la Presidencia del Gobierno». La inclusión del candidato alternativo convierte la moción española en «constructiva»."
+  },
+  {
+    p: "El artículo 113.3 CE establece que la moción de censura no puede votarse hasta que hayan transcurrido ciertos días desde su presentación. ¿Cuántos?",
+    ops: ["Tres días desde su presentación", "Cinco días desde su presentación", "Siete días desde su presentación", "Diez días desde su presentación"],
+    c: 1,
+    exp: "<strong>Respuesta correcta: B.</strong> El art. 113.3 CE establece que «la moción de censura no podrá ser votada hasta que transcurran cinco días desde su presentación. En los dos primeros días de dicho plazo podrán presentarse mociones alternativas». Este plazo permite la reflexión y la posible negociación."
+  },
+  {
+    p: "Si la moción de censura no fuere aprobada por el Congreso, ¿qué limitación impone el artículo 113.4 CE a sus signatarios?",
+    ops: ["No podrán presentar otra moción de censura en toda la legislatura", "No podrán presentar otra moción de censura durante el mismo período de sesiones", "No podrán formular interpelaciones al Gobierno durante seis meses", "Quedan inhabilitados para ocupar cargos en el siguiente Gobierno"],
+    c: 1,
+    exp: "<strong>Respuesta correcta: B.</strong> El art. 113.4 CE establece que «si la moción de censura no fuere aprobada por el Congreso, sus signatarios no podrán presentar otra durante el mismo período de sesiones». Esta limitación evita el uso obstruccionista de la moción de censura."
+  },
+  {
+    p: "Si el Congreso aprueba una moción de censura, ¿qué consecuencias prevé el artículo 114.2 CE?",
+    ops: ["El Gobierno presenta su dimisión y se convoca inmediatamente una nueva investidura", "El Gobierno presenta su dimisión al Rey y el candidato incluido en la moción se entenderá investido; el Rey le nombrará Presidente del Gobierno", "El Presidente del Gobierno puede disolver las Cortes antes de presentar su dimisión", "El Congreso vota al candidato incluido en la moción en una segunda votación de investidura"],
+    c: 1,
+    exp: "<strong>Respuesta correcta: B.</strong> El art. 114.2 CE establece que si el Congreso adopta una moción de censura, «el Gobierno presentará su dimisión al Rey y el candidato incluido en aquélla se entenderá investido de la confianza de la Cámara a los efectos previstos en el artículo 99. El Rey le nombrará Presidente del Gobierno»."
+  },
+  {
+    p: "El artículo 115.1 CE regula la disolución de las Cámaras por el Presidente del Gobierno. ¿Qué condiciones establece?",
+    ops: ["Puede disolver solo el Congreso, previa autorización del Senado por mayoría absoluta", "Puede proponer la disolución del Congreso, del Senado o de las Cortes Generales, previa deliberación del Consejo de Ministros y bajo su exclusiva responsabilidad; la disuelve el Rey mediante decreto que fija la fecha de elecciones", "Puede disolver ambas Cámaras conjuntamente previa autorización del Tribunal Constitucional", "Solo puede disolver las Cortes cuando haya una moción de censura en tramitación"],
+    c: 1,
+    exp: "<strong>Respuesta correcta: B.</strong> El art. 115.1 CE establece que el Presidente del Gobierno, previa deliberación del Consejo de Ministros y bajo su exclusiva responsabilidad, podrá proponer la disolución del Congreso, del Senado o de las Cortes Generales, que «será decretada por el Rey. El decreto de disolución fijará la fecha de las elecciones»."
+  },
+  {
+    p: "El artículo 115.2 CE prohíbe proponer la disolución de las Cámaras en un supuesto concreto. ¿Cuál es?",
+    ops: ["Cuando esté vigente el estado de alarma o excepción", "Cuando esté en trámite una moción de censura", "Cuando no hayan transcurrido doce meses desde la última disolución", "Cuando el Gobierno esté en funciones tras la celebración de elecciones generales"],
+    c: 1,
+    exp: "<strong>Respuesta correcta: B.</strong> El art. 115.2 CE establece que «la propuesta de disolución no podrá presentarse cuando esté en trámite una moción de censura». Esta prohibición evita que el Gobierno use la disolución como escudo frente a una moción de censura en curso."
+  },
+  {
+    p: "El artículo 115.3 CE limita la frecuencia de las disoluciones parlamentarias. ¿Qué establece?",
+    ops: ["No puede haber nueva disolución antes de que transcurran dos años desde la anterior", "No procederá nueva disolución antes de que transcurra un año desde la anterior, salvo lo dispuesto en el art. 99.5 CE", "No puede disolverse el mismo Congreso más de dos veces durante la misma legislatura", "No puede haber disolución parlamentaria durante el primer año de mandato de un nuevo Gobierno"],
+    c: 1,
+    exp: "<strong>Respuesta correcta: B.</strong> El art. 115.3 CE establece que «no procederá nueva disolución antes de que transcurra un año desde la anterior, salvo lo dispuesto en el artículo 99, apartado 5». La excepción del art. 99.5 es la disolución automática por bloqueo de investidura."
+  },
+  {
+    p: "El artículo 116.1 CE exige que los estados de alarma, excepción y sitio, y sus competencias y limitaciones, sean regulados por:",
+    ops: ["Decreto del Consejo de Ministros con posterior ratificación parlamentaria", "Ley orgánica", "Ley ordinaria aprobada por el Congreso", "Real Decreto-ley con convalidación parlamentaria en 30 días"],
+    c: 1,
+    exp: "<strong>Respuesta correcta: B.</strong> El art. 116.1 CE establece que «una ley orgánica regulará los estados de alarma, de excepción y de sitio, y las competencias y limitaciones correspondientes». Esta ley orgánica es la LO 4/1981, de los estados de alarma, excepción y sitio."
+  },
+  {
+    p: "El estado de alarma se regula en el artículo 116.2 CE. ¿Quién lo declara, mediante qué instrumento y por qué plazo máximo inicial?",
+    ops: ["El Congreso de los Diputados, mediante resolución, por un plazo máximo de treinta días", "El Gobierno mediante decreto acordado en Consejo de Ministros, por un plazo máximo de quince días, dando cuenta al Congreso", "El Presidente del Gobierno mediante decreto, por un plazo máximo de quince días, con autorización previa del Congreso", "El Consejo de Ministros, mediante real decreto, por un plazo de treinta días prorrogables"],
+    c: 1,
+    exp: "<strong>Respuesta correcta: B.</strong> El art. 116.2 CE establece que «el estado de alarma será declarado por el Gobierno mediante decreto acordado en Consejo de Ministros por un plazo máximo de quince días, dando cuenta al Congreso de los Diputados, reunido inmediatamente al efecto y sin cuya autorización no podrá ser prorrogado dicho plazo»."
+  },
+  {
+    p: "Para declarar el estado de excepción según el artículo 116.3 CE, ¿qué requisito previo es indispensable?",
+    ops: ["Informe previo del Consejo de Estado y aprobación por mayoría absoluta del Senado", "Previa autorización del Congreso de los Diputados", "Decreto del Consejo de Ministros sin necesidad de autorización parlamentaria previa", "Propuesta del Presidente del Gobierno con refrendo del Ministro del Interior"],
+    c: 1,
+    exp: "<strong>Respuesta correcta: B.</strong> El art. 116.3 CE establece que «el estado de excepción será declarado por el Gobierno mediante decreto acordado en Consejo de Ministros, previa autorización del Congreso de los Diputados». A diferencia del estado de alarma, el de excepción requiere autorización parlamentaria previa, no solo comunicación."
+  },
+  {
+    p: "¿Cuál es la duración máxima del estado de excepción según el artículo 116.3 CE y cómo puede prorrogarse?",
+    ops: ["Treinta días, prorrogables por otro plazo igual con los mismos requisitos", "Quince días, prorrogables por otros quince con autorización del Congreso", "Sesenta días, sin posibilidad de prórroga", "Noventa días, prorrogables una sola vez por otros noventa días"],
+    c: 0,
+    exp: "<strong>Respuesta correcta: A.</strong> El art. 116.3 CE establece que la duración del estado de excepción «no podrá exceder de treinta días, prorrogables por otro plazo igual, con los mismos requisitos». La prórroga requiere, por tanto, nueva autorización del Congreso de los Diputados."
+  },
+  {
+    p: "El estado de sitio se regula en el artículo 116.4 CE. ¿Quién lo declara y a propuesta de quién?",
+    ops: ["El Gobierno mediante decreto acordado en Consejo de Ministros a propuesta del Ministro de Defensa", "La mayoría absoluta del Congreso de los Diputados, a propuesta exclusiva del Gobierno", "El Rey mediante decreto refrendado por el Presidente del Gobierno, a propuesta de las Cortes Generales", "El Congreso y el Senado en sesión conjunta, a propuesta del Presidente del Gobierno"],
+    c: 1,
+    exp: "<strong>Respuesta correcta: B.</strong> El art. 116.4 CE establece que «el estado de sitio será declarado por la mayoría absoluta del Congreso de los Diputados, a propuesta exclusiva del Gobierno». Es el estado de mayor gravedad y su declaración corresponde al Parlamento, no al Ejecutivo."
+  },
+  {
+    p: "El artículo 116.5 CE establece una prohibición expresa durante la vigencia de los estados de alarma, excepción o sitio. ¿Cuál es?",
+    ops: ["El Presidente del Gobierno no puede plantear la cuestión de confianza", "No podrá procederse a la disolución del Congreso mientras estén declarados estos estados", "No podrá aprobarse ninguna ley orgánica ni modificarse la Constitución", "No podrán celebrarse elecciones generales ni municipales durante su vigencia"],
+    c: 1,
+    exp: "<strong>Respuesta correcta: B.</strong> El art. 116.5 CE establece que «no podrá procederse a la disolución del Congreso mientras estén declarados algunos de los estados comprendidos en el presente artículo». Además, las Cámaras quedan automáticamente convocadas si no estuvieren en período de sesiones."
+  },
+  {
+    p: "El artículo 116.6 CE establece una garantía fundamental respecto a la declaración de los estados de emergencia. ¿Cuál es?",
+    ops: ["El Gobierno puede suspender la Constitución durante la vigencia del estado de sitio", "La declaración de los estados de alarma, excepción y sitio no modificará el principio de responsabilidad del Gobierno y de sus agentes reconocidos en la CE y en las leyes", "Los derechos fundamentales quedan automáticamente suspendidos durante el estado de sitio", "El Gobierno puede dictar normas con rango de ley sin control parlamentario durante el estado de excepción"],
+    c: 1,
+    exp: "<strong>Respuesta correcta: B.</strong> El art. 116.6 CE establece que «la declaración de los estados de alarma, de excepción y de sitio no modificarán el principio de responsabilidad del Gobierno y de sus agentes reconocidos en la Constitución y en las leyes». La emergencia no exime al Gobierno de responsabilidad."
+  },
+  // ── PREGUNTAS DE CONTRASTE Y DETALLE ──
+  {
+    p: "El artículo 103.1 CE enumera los principios de actuación de la Administración Pública. ¿Cuál de los siguientes NO figura expresamente en ese artículo?",
+    ops: ["Jerarquía", "Eficacia", "Transparencia", "Coordinación"],
+    c: 2,
+    exp: "<strong>Respuesta correcta: C.</strong> El art. 103.1 CE menciona: eficacia, jerarquía, descentralización, desconcentración y coordinación. La «transparencia» no figura expresamente en este artículo constitucional, aunque es un principio desarrollado por la legislación ordinaria (Ley 19/2013 de Transparencia)."
+  },
+  {
+    p: "¿Cuál es la diferencia fundamental entre descentralización y desconcentración como principios del art. 103.1 CE?",
+    ops: ["Son sinónimos; la CE los usa indistintamente para referirse a la distribución territorial del poder", "La descentralización implica transferencia de competencias a entes con personalidad jurídica propia; la desconcentración es la traslación de competencias dentro de la misma persona jurídica a órganos inferiores", "La descentralización es territorial y la desconcentración es funcional, pero ambas requieren ley orgánica", "La descentralización se aplica a las CCAA y la desconcentración solo a la Administración Local"],
+    c: 1,
+    exp: "<strong>Respuesta correcta: B.</strong> Aunque el art. 103.1 CE no define los términos, la doctrina y jurisprudencia distinguen: la descentralización supone la transferencia de competencias a entes dotados de personalidad jurídica propia (CCAA, municipios); la desconcentración es la traslación de atribuciones dentro de la misma Administración a órganos de nivel inferior."
+  },
+  {
+    p: "Según el artículo 98.4 CE, ¿qué norma regula el estatuto e incompatibilidades de los miembros del Gobierno?",
+    ops: ["Un real decreto del Consejo de Ministros con rango reglamentario", "La ley", "Una ley orgánica, dado que afecta al ejercicio del poder ejecutivo", "El propio Reglamento del Congreso"],
+    c: 1,
+    exp: "<strong>Respuesta correcta: B.</strong> El art. 98.4 CE establece que «la ley regulará el estatuto e incompatibilidades de los miembros del Gobierno». No exige ley orgánica, por lo que basta con una ley ordinaria. Esta previsión se desarrolló en la Ley 3/2015 del Gobierno y la Ley de Conflictos de Intereses."
+  },
+  {
+    p: "El artículo 106.2 CE consagra la responsabilidad patrimonial de la Administración. ¿A quién corresponde el derecho a la indemnización?",
+    ops: ["Solo a los ciudadanos españoles que sufran lesiones por el funcionamiento de los servicios públicos", "A los particulares, en los términos establecidos por la ley, por toda lesión en sus bienes y derechos que sea consecuencia del funcionamiento de los servicios públicos", "Únicamente a las personas físicas, no a las personas jurídicas ni entidades sin ánimo de lucro", "A todos los afectados, sin necesidad de que la lesión sea imputable al funcionamiento del servicio público"],
+    c: 1,
+    exp: "<strong>Respuesta correcta: B.</strong> El art. 106.2 CE reconoce el derecho de «los particulares» (término que incluye a personas físicas y jurídicas, nacionales y extranjeros) a ser indemnizados «por toda lesión que sufran en cualquiera de sus bienes y derechos (…) siempre que la lesión sea consecuencia del funcionamiento de los servicios públicos»."
+  },
+  {
+    p: "La responsabilidad criminal de los miembros del Gobierno se exige ante la Sala de lo Penal del Tribunal Supremo (art. 102.1 CE). ¿Se aplica este fuero a todos los delitos sin excepción?",
+    ops: ["Sí, el aforamiento es absoluto para todos los delitos cometidos durante el mandato", "Sí, aunque para los delitos de traición o contra la seguridad del Estado se requieren mayorías cualificadas en el Congreso para plantear la acusación", "No, solo se aplica a los delitos cometidos en el ejercicio de sus funciones, no a los delitos privados", "No, solo se aplica al Presidente del Gobierno; los ministros son juzgados por la Audiencia Nacional"],
+    c: 1,
+    exp: "<strong>Respuesta correcta: B.</strong> El art. 102.1 CE establece el aforamiento ante la Sala de lo Penal del TS para la responsabilidad criminal del Presidente y los demás miembros del Gobierno. El art. 102.2 añade que para traición o delitos contra la seguridad del Estado se necesita iniciativa de un cuarto de los diputados y aprobación por mayoría absoluta. El fuero se aplica con carácter general."
+  },
+  {
+    p: "Según el artículo 112 CE, la cuestión de confianza puede plantearse sobre dos objetos distintos. ¿Cuáles son?",
+    ops: ["Sobre el presupuesto general del Estado o sobre una ley orgánica en tramitación", "Sobre su programa o sobre una declaración de política general", "Sobre la política exterior o sobre la política de defensa nacional", "Sobre cualquier asunto de interés nacional a discreción del Presidente del Gobierno"],
+    c: 1,
+    exp: "<strong>Respuesta correcta: B.</strong> El art. 112 CE precisa que el Presidente del Gobierno puede plantear la cuestión de confianza «sobre su programa o sobre una declaración de política general». Estos son los dos únicos objetos posibles; no puede plantearse sobre una ley concreta ni sobre un acto administrativo."
+  },
+  {
+    p: "¿Qué diferencia fundamental existe entre la cuestión de confianza (art. 112 CE) y la moción de censura (art. 113 CE) en cuanto a la iniciativa?",
+    ops: ["Ambas pueden ser iniciadas indistintamente por el Gobierno o por los Diputados", "La cuestión de confianza la inicia el Presidente del Gobierno; la moción de censura la inician los Diputados", "Ambas las inicia siempre el Congreso de los Diputados en pleno", "La cuestión de confianza la inicia el Congreso y la moción de censura el Gobierno"],
+    c: 1,
+    exp: "<strong>Respuesta correcta: B.</strong> La diferencia fundamental es de iniciativa: la cuestión de confianza (art. 112) la plantea el Presidente del Gobierno de forma voluntaria; la moción de censura (art. 113) es una iniciativa de al menos la décima parte de los Diputados. Son los dos grandes instrumentos de la relación fiduciaria, pero con dinámicas opuestas."
+  },
+  {
+    p: "El artículo 116.5 CE establece qué sucede con las competencias del Congreso si éste estuviera disuelto cuando se produzca una situación que dé lugar a alguno de los estados de emergencia. ¿Qué órgano asume sus competencias?",
+    ops: ["El Senado asume todas las competencias del Congreso de forma temporal", "Su Diputación Permanente asumirá las competencias del Congreso", "El Tribunal Constitucional supervisará las decisiones del Gobierno hasta la reconstitución del Congreso", "El Consejo de Estado asumirá las funciones consultivas y de control parlamentario"],
+    c: 1,
+    exp: "<strong>Respuesta correcta: B.</strong> El art. 116.5 CE establece que si el Congreso estuviera disuelto o hubiera expirado su mandato y se produjera alguno de los estados de emergencia, «las competencias del Congreso serán asumidas por su Diputación Permanente». Esta previsión garantiza el control parlamentario incluso en situaciones excepcionales."
+  },
+  {
+    p: "En la votación de investidura del artículo 99 CE, si en la primera votación no se alcanza la mayoría absoluta y en la segunda tampoco la mayoría simple, ¿qué ocurre a continuación?",
+    ops: ["El candidato propuesto queda definitivamente vetado y no puede volver a ser propuesto", "Se tramitarán sucesivas propuestas en la forma prevista en el art. 99.1 CE, iniciándose consultas del Rey con los grupos parlamentarios", "El Rey disolverá inmediatamente las Cámaras sin esperar más candidaturas", "El Gobierno en funciones asume poderes plenos hasta que se forme un nuevo Gobierno"],
+    c: 1,
+    exp: "<strong>Respuesta correcta: B.</strong> El art. 99.4 CE establece que «si efectuadas las citadas votaciones no se otorgase la confianza para la investidura, se tramitarán sucesivas propuestas en la forma prevista en los apartados anteriores». El proceso puede repetirse con distintos candidatos hasta agotar el plazo de dos meses del art. 99.5 CE."
+  },
+  {
+    p: "El artículo 105.a) CE garantiza la audiencia de los ciudadanos en el procedimiento de elaboración de disposiciones administrativas. ¿Qué formas de participación prevé?",
+    ops: ["Solo la participación directa mediante consulta individual a los interesados", "Directamente o a través de las organizaciones y asociaciones reconocidas por la ley", "Únicamente a través de las organizaciones sindicales y empresariales legalmente constituidas", "Mediante referéndum consultivo convocado por la Administración competente"],
+    c: 1,
+    exp: "<strong>Respuesta correcta: B.</strong> El art. 105.a) CE establece que la ley regulará «la audiencia de los ciudadanos, directamente o a través de las organizaciones y asociaciones reconocidas por la ley, en el procedimiento de elaboración de las disposiciones administrativas que les afecten». Se admite tanto la participación directa como la indirecta a través de organizaciones."
+  },
+  {
+    p: "¿Cuál es la diferencia entre la disolución automática del art. 99.5 CE y la disolución discrecional del art. 115 CE?",
+    ops: ["No existe diferencia: en ambos casos el Presidente del Gobierno propone la disolución y el Rey la decreta", "En el art. 99.5 la disolución es automática por bloqueo de investidura y la refrenda el Presidente del Congreso; en el art. 115 es discrecional del Presidente del Gobierno, refrendada por él mismo, y requiere deliberación del Consejo de Ministros", "En el art. 99.5 solo se disuelve el Congreso; en el art. 115 solo puede disolverse el Senado", "En el art. 99.5 la disuelve el Congreso por mayoría absoluta; en el art. 115 la decreta el Gobierno directamente"],
+    c: 1,
+    exp: "<strong>Respuesta correcta: B.</strong> Son dos supuestos distintos: el art. 99.5 prevé una disolución automática (no discrecional) cuando transcurren dos meses sin investidura, y el refrendo lo realiza el Presidente del Congreso; el art. 115 regula la disolución discrecional que propone el Presidente del Gobierno bajo su exclusiva responsabilidad, previa deliberación del Consejo de Ministros, y él mismo la refrenda."
+  },
+  {
+    p: "Según el artículo 111.1 CE, los Reglamentos de las Cámaras deben establecer un tiempo mínimo para las interpelaciones y preguntas al Gobierno. ¿Con qué periodicidad?",
+    ops: ["Un tiempo mínimo mensual", "Un tiempo mínimo semanal", "Un tiempo mínimo por período de sesiones", "Un tiempo mínimo quincenal"],
+    c: 1,
+    exp: "<strong>Respuesta correcta: B.</strong> El art. 111.1 CE establece que «para esta clase de debate los Reglamentos establecerán un tiempo mínimo semanal». La periodicidad semanal garantiza un control regular y continuo del Gobierno por parte del Parlamento."
+  },
+  {
+    p: "Resumiendo el Título V, ¿ante qué Cámara responde el Gobierno políticamente de forma exclusiva según la Constitución?",
+    ops: ["Ante el Senado, por ser la Cámara de representación territorial", "Ante el Congreso de los Diputados, según el art. 108 CE", "Ante ambas Cámaras por igual, según los arts. 108 a 116 CE", "Ante las Cortes Generales en sesión conjunta, salvo para la moción de censura"],
+    c: 1,
+    exp: "<strong>Respuesta correcta: B.</strong> El art. 108 CE es inequívoco: «el Gobierno responde solidariamente en su gestión política ante el Congreso de los Diputados». Los instrumentos de control político más poderosos —moción de censura (art. 113), cuestión de confianza (art. 112), investidura (art. 99)— se ejercen únicamente en el Congreso."
+  }
+];
+
+function shuffle(arr){const a=[...arr];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+
+function prepararPreguntas(){
+  const m=shuffle(BANCO);
+  return m.map(q=>{
+    const ct=q.ops[q.c];
+    const no=shuffle(q.ops);
+    return{p:q.p,ops:no,c:no.indexOf(ct),exp:q.exp};
+  });
+}
+
+let preguntas=[],respondidas=0,correctas=0,incorrectas=0;
+
+function actualizarBarra(){
+  const pct=preguntas.length?(respondidas/preguntas.length)*100:0;
+  document.getElementById('barraFill').style.width=pct+'%';
+  document.getElementById('barraNum').textContent=respondidas+' / '+preguntas.length;
+  document.getElementById('scoreOk').textContent='✓ '+correctas;
+  document.getElementById('scoreKo').textContent='✗ '+incorrectas;
+}
+
+function responder(qi,oi){
+  const q=preguntas[qi];
+  const btns=document.querySelectorAll('[data-qi="'+qi+'"]');
+  btns.forEach(b=>b.disabled=true);
+  btns.forEach((b,j)=>{
+    if(j===q.c)b.classList.add('correcta');
+    else if(j===oi&&oi!==q.c)b.classList.add('incorrecta');
+  });
+  document.getElementById('exp-'+qi).classList.add('visible');
+  respondidas++;
+  if(oi===q.c)correctas++;else incorrectas++;
+  actualizarBarra();
+  if(respondidas===preguntas.length)setTimeout(mostrarResultado,700);
+}
+
+function mostrarResultado(){
+  const pct=Math.round((correctas/preguntas.length)*100);
+  document.getElementById('resPunt').innerHTML=correctas+' <span>/ '+preguntas.length+'</span>';
+  document.getElementById('resCorr').textContent=correctas;
+  document.getElementById('resIncorr').textContent=incorrectas;
+  document.getElementById('resPct').textContent=pct+'%';
+  let txt,col,bg;
+  if(pct>=90){txt='🏆 Sobresaliente';col='#166534';bg='#f0fdf4';}
+  else if(pct>=75){txt='✅ Notable';col='#1e3a5f';bg='#eff6ff';}
+  else if(pct>=60){txt='📘 Aprobado';col='#92400e';bg='#fffbeb';}
+  else{txt='❌ Insuficiente — ¡Sigue practicando!';col='#991b1b';bg='#fef2f2';}
+  document.getElementById('resCalif').innerHTML='<span class="calif-badge" style="background:'+bg+';color:'+col+'">'+txt+'</span>';
+  const el=document.getElementById('resultado');
+  el.classList.add('visible');
+  el.scrollIntoView({behavior:'smooth',block:'center'});
+}
+
+function render(){
+  respondidas=0;correctas=0;incorrectas=0;
+  preguntas=prepararPreguntas();
+  actualizarBarra();
+  const main=document.getElementById('mainContent');
+  main.innerHTML='';
+  const letras=['A','B','C','D'];
+  preguntas.forEach((q,i)=>{
+    const card=document.createElement('div');
+    card.className='card';
+    card.innerHTML=
+      '<div class="card-num">Pregunta '+(i+1)+' de '+preguntas.length+'</div>'+
+      '<div class="card-pregunta">'+q.p+'</div>'+
+      '<div class="opciones">'+
+      q.ops.map((op,j)=>'<button class="opcion" data-qi="'+i+'" onclick="responder('+i+','+j+')"><span class="letra">'+letras[j]+')</span><span>'+op+'</span></button>').join('')+
+      '</div>'+
+      '<div class="explicacion" id="exp-'+i+'">'+q.exp+'</div>';
+    main.appendChild(card);
+  });
+  const sep=document.createElement('div');sep.className='divider';sep.textContent='Fin del test';main.appendChild(sep);
+  const res=document.createElement('div');res.className='resultado';res.id='resultado';
+  res.innerHTML=
+    '<div class="resultado-eyebrow">Resultado final</div>'+
+    '<h2>Test completado</h2>'+
+    '<div class="resultado-nota" id="resPunt">0 <span>/ 50</span></div>'+
+    '<div id="resCalif"></div>'+
+    '<div class="stats">'+
+    '<div class="stat"><div class="stat-num" id="resCorr" style="color:#166534">0</div><div class="stat-lab">Correctas</div></div>'+
+    '<div class="stat"><div class="stat-num" id="resIncorr" style="color:#991b1b">0</div><div class="stat-lab">Incorrectas</div></div>'+
+    '<div class="stat"><div class="stat-num" id="resPct">0%</div><div class="stat-lab">% aciertos</div></div>'+
+    '</div>'+
+    '<p class="resultado-hint">Desplázate hacia arriba para revisar las explicaciones de cada pregunta.</p>'+
+    '<button class="btn btn-naranja" onclick="render();window.scrollTo({top:0,behavior:\'smooth\'})">↺ Repetir con nuevo orden</button>';
+  main.appendChild(res);
+}
+
+render();
+</script>
+</body>
+</html>
